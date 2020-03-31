@@ -2,6 +2,23 @@
 require 'rubygems'
 require 'sinatra'
 require 'sinatra/reloader'
+require 'sqlite3'
+
+def get_db
+    SQLite3::Database.new('./public/barbershop.db')
+end
+
+configure do
+    get_db.execute(
+        "CREATE TABLE IF NOT EXISTS 'users' (
+            'id' INTEGER PRIMARY KEY AUTOINCREMENT,
+            'username' TEXT,
+            'phone' TEXT,
+            'datestamp' TEXT,                              
+            'barber' TEXT,
+            'color' TEXT
+    );")
+end
 
 get '/' do
 	erb "Hello, Vovanus! <a href=\"https://github.com/bootstrap-ruby/sinatra-bootstrap\">Original</a> pattern has been modified for <a href=\"http://rubyschool.us/\">Ruby School</a>"			
@@ -19,6 +36,10 @@ get '/contacts' do
 	erb :contacts
 end
 
+get '/showusers' do 
+    erb "Hello, World"
+end
+
 post '/visit' do
 
     @username  = params[:username]; 
@@ -28,7 +49,7 @@ post '/visit' do
     @color     = params[:color];
 
     @title     = 'Thanks you!';
-    @message   = "Dear #{@user_name}, we'll be waiting for you at #{@date_time}. Master: #{@master}. Color: #{@color}";
+    @message   = "Dear #{@user_name}, we'll be waiting for you at #{@datetime}. Master: #{@master}. Color: #{@color}";
 
     # Проверка заполнения
     errPattern = {
@@ -53,16 +74,12 @@ post '/visit' do
 
 end
 
-def writeDatabase(username,phone,datetime,master,color)
 
-    require 'sqlite3'
+def writeDatabase(username, phone, datestamp, barber, color)
 
-    query = SQLite3::Database.new('./public/barbershop.db');
+    queryText = "INSERT INTO users (username,phone,datestamp,barber,color) VALUES ( ? , ? , ? , ? , ? )";
+    get_db.execute(queryText, [username, phone, datestamp, barber, color]);
 
-    queryText = "INSERT INTO visits (username,phone,datetime,master,color) " + 
-                "VALUES ('#{username}','#{phone}','#{datetime}','#{master}','#{color}');";
-    query.execute(queryText);
-
-    return true;
+    true;
 
 end
