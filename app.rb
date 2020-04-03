@@ -21,6 +21,24 @@ configure do
             'barber' TEXT,
             'color' TEXT
     );")
+
+    get_db.execute(
+        "CREATE TABLE IF NOT EXISTS 'barbers' (
+            'id' INTEGER PRIMARY KEY AUTOINCREMENT,
+            'name' TEXT);")
+
+    barbersExists = false
+
+    get_db.execute "SELECT 'true' AS answer FROM barbers LIMIT 1" do
+        barbersExists = true
+    end
+
+    if !barbersExists 
+        ['Walter White', 'Jessie Pinkman', 'Gus Fring'].each do |barber| 
+            get_db.execute("INSERT INTO barbers (name) VALUES ( ? )", [barber]);
+        end
+    end
+
 end
 
 get '/' do
@@ -32,7 +50,15 @@ get '/about' do
 end
 
 get '/visit' do
-	erb :visit
+
+    @barbersSelect = ""
+
+    get_db.execute 'select name from barbers' do |row|
+        @barbersSelect += "<option>#{row['name']}</option>"        
+    end
+
+    erb :visit
+    
 end
 
 get '/contacts' do
