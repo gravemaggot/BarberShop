@@ -7,7 +7,7 @@
   </div>
   <div class="form-group">
     <label>Ваш телефон</label>
-    <input name = "phone" type="text" class="form-control" placeholder="+375000000000" value = "<%= @phone %>">
+    <input id = "phone" name = "phone" type="text" class="form-control" placeholder="+375 (99) 999-99-99" value = "<%= @phone %>">
   </div>
   <div class="form-group">
     <label>Когда вас ждать?</label>
@@ -46,9 +46,10 @@
     $(function(){
       $('#color').simplecolorpicker();
       // $('#datetimepicker').datetimepicker();
-      $('.datetimepicker').datepicker({
+      /*$('.datetimepicker').datepicker({
         format: 'mm/dd/yyyy',
         startDate: '-3d'
-      });
+      });*/
+      $("#phone").mask("+375 (99) 999-99-99");
     });   
 </script>
