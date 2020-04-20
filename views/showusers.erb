@@ -12,7 +12,17 @@
         </tr>
       </thead>
       <tbody>
-        <%= @table_content %>
+        <% num = 0; @results.each do |row| %>
+        <% num = num + 1; %>
+          <tr>
+            <th scope="row"><%= num %></th>
+            <td><%= row['username'] %></td>
+            <td><%= row['phone']    %></td>
+            <td><%= row['datestamp']%></td>
+            <td><%= row['barber']   %></td>
+            <td><%= row['color']    %></td>
+          </tr>
+        <% end %>
       </tbody>
     </table>
 </div>

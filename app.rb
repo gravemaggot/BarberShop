@@ -67,25 +67,7 @@ end
 
 get '/showusers' do
     
-    @table_content = ""
-
-    num = 1
-
-    get_db.execute "select username,phone,datestamp,barber,color from users order by id desc" do |row|
-
-        @table_content +=  
-        "<tr>
-            <th scope=""row"">#{num}</th>
-            <td>#{row['username']}</td>
-            <td>#{row['phone']}</td>
-            <td>#{row['datestamp']}</td>
-            <td>#{row['barber']}</td>
-            <td>#{row['color']}</td>
-        </tr>\n"
-
-        num += 1
-
-    end
+    @results = get_db.execute "select username,phone,datestamp,barber,color from users order by id desc" 
 
     erb(:showusers)
 
