@@ -17,8 +17,8 @@
   <div class="form-group">
     <label>Ваш мастер</label>
     <select class="form-control" name = "master">
-      <% @results.each do |row| %>
-          <option><%= row['name'] %> </option>
+      <% @barbers.each do |row| %>
+          <option <%= @master == row['name'] ? 'selected' : ''%>><%= row['name'] %> </option>
       <% end %>
     </select>
   </div>
